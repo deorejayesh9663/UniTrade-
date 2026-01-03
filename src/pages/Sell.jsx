@@ -6,6 +6,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { compressImage } from '../utils/compressor';
 import './Sell.css';
 
 const Sell = () => {
@@ -36,8 +37,11 @@ const Sell = () => {
     const uploadImage = async () => {
         if (!imageFile) return "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600";
 
+        // Compress image before upload
+        const compressedBlob = await compressImage(imageFile, { maxWidth: 800, quality: 0.7 });
+
         const storageRef = ref(storage, `listings/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(storageRef, imageFile);
+        const snapshot = await uploadBytes(storageRef, compressedBlob);
         return await getDownloadURL(snapshot.ref);
     };
 
