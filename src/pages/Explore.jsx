@@ -44,7 +44,7 @@ const Explore = () => {
             : `${activeCategory} for Sale - UniTrade Marketplace`;
     }, [activeCategory]);
 
-    const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Lab Gear', 'Other'];
+    const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Lab Gear', 'Clothing', 'Cycles', 'Study Notes', 'Hostel Gear', 'Instruments', 'Other'];
 
     const filteredItems = items.filter(item => {
         const matchesCategory = activeCategory === 'All' || item.category === activeCategory;

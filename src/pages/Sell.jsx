@@ -23,7 +23,7 @@ const Sell = () => {
         description: ''
     });
 
-    const categories = ['Books', 'Electronics', 'Furniture', 'Lab Gear', 'Clothing', 'Other'];
+    const categories = ['Books', 'Electronics', 'Furniture', 'Lab Gear', 'Clothing', 'Cycles', 'Study Notes', 'Hostel Gear', 'Instruments', 'Other'];
     const campusLocations = ['Main Library', 'Engineering Block', 'Hostel Block A', 'Hostel Block B', 'Cafeteria', 'Sports Ground'];
 
     const handleImageChange = (e) => {
