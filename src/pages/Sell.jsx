@@ -56,6 +56,12 @@ const Sell = () => {
         try {
             const imageUrl = await uploadImage();
 
+            // Create a "Proper" SEO-friendly slug
+            const slug = formData.title
+                .toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
+
             await addDoc(collection(db, "listings"), {
                 ...formData,
                 price: parseFloat(formData.price),
@@ -63,7 +69,9 @@ const Sell = () => {
                 sellerName: user.displayName || "Student",
                 college: user.college || "Universal", // Default to Universal if no college set
                 createdAt: serverTimestamp(),
-                image: imageUrl
+                image: imageUrl,
+                slug: slug, // Add for "Proper" URLs
+                sold: false
             });
             alert("Listing created successfully!");
             navigate('/explore');

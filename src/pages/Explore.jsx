@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { db } from '../firebase/config';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, Filter, MapPin, Tag, Clock, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Explore.css';
@@ -10,11 +10,18 @@ import './Explore.css';
 const Explore = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // Get initial values from URL or defaults
+    const urlCategory = searchParams.get('cat') || 'All';
+    const urlSearch = searchParams.get('q') || '';
+    const urlMaxPrice = searchParams.get('max') || '';
+
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState('All');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
+    const [activeCategory, setActiveCategory] = useState(urlCategory);
+    const [searchQuery, setSearchQuery] = useState(urlSearch);
+    const [maxPrice, setMaxPrice] = useState(urlMaxPrice);
     const [communityFilter, setCommunityFilter] = useState('My College');
 
     useEffect(() => {
@@ -39,10 +46,18 @@ const Explore = () => {
     }, []);
 
     useEffect(() => {
+        // Sync state to URL
+        const params = {};
+        if (activeCategory !== 'All') params.cat = activeCategory;
+        if (searchQuery) params.q = searchQuery;
+        if (maxPrice) params.max = maxPrice;
+        setSearchParams(params, { replace: true });
+
+        // Update Document Title
         document.title = activeCategory === 'All'
             ? 'Explore Campus Listings - UniTrade'
             : `${activeCategory} for Sale - UniTrade Marketplace`;
-    }, [activeCategory]);
+    }, [activeCategory, searchQuery, maxPrice, setSearchParams]);
 
     const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Lab Gear', 'Clothing', 'Cycles', 'Study Notes', 'Hostel Gear', 'Instruments', 'Other'];
 
@@ -133,7 +148,13 @@ const Explore = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             className="item-card glass-card"
-                            onClick={() => navigate(`/item/${item.id}`)}
+                            onClick={() => {
+                                if (item.slug) {
+                                    navigate(`/item/s/${item.slug}`);
+                                } else {
+                                    navigate(`/item/${item.id}`);
+                                }
+                            }}
                         >
                             <div className="item-image">
                                 <img src={item.image} alt={item.title} />

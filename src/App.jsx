@@ -25,6 +25,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/item/:id" element={<ItemDetail />} />
+              <Route path="/item/s/:slug" element={<ItemDetail slugMode={true} />} />
               <Route path="/sell" element={<Sell />} />
               <Route path="/login" element={<Auth />} />
               <Route path="/chat/:chatId" element={<Chat />} />

@@ -6,6 +6,16 @@ import './Navbar.css';
 
 const Navbar = () => {
     const { user, isAdmin } = useAuth();
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = React.useState('');
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter' && searchTerm.trim()) {
+            navigate(`/explore?q=${encodeURIComponent(searchTerm.trim())}`);
+            setSearchTerm('');
+        }
+    };
+
     return (
         <nav className="navbar glass-card">
             <div className="nav-container">
@@ -16,7 +26,13 @@ const Navbar = () => {
 
                 <div className="search-bar glass-card">
                     <Search size={18} className="search-icon" />
-                    <input type="text" placeholder="Search for books, gadgets, furniture..." />
+                    <input
+                        type="text"
+                        placeholder="Search for books, gadgets, furniture..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={handleSearch}
+                    />
                 </div>
 
                 <div className="nav-links">

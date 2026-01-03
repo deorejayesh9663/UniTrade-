@@ -81,7 +81,7 @@ const Home = () => {
                             key={cat.name}
                             whileHover={{ scale: 1.05 }}
                             className="cat-card glass-card"
-                            onClick={() => navigate(`/explore?category=${cat.name}`)}
+                            onClick={() => navigate(`/explore?cat=${cat.name}`)}
                         >
                             <span className="cat-icon">{cat.icon}</span>
                             <h3>{cat.name}</h3>

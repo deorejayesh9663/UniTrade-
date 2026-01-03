@@ -7,8 +7,8 @@ import { MapPin, Clock, ShieldCheck, MessageCircle, ArrowLeft, Share2, Heart } f
 import React, { useState, useEffect } from 'react';
 import './ItemDetail.css';
 
-const ItemDetail = () => {
-    const { id } = useParams();
+const ItemDetail = ({ slugMode = false }) => {
+    const { id, slug } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
     const [item, setItem] = useState(null);
@@ -22,10 +22,23 @@ const ItemDetail = () => {
     useEffect(() => {
         const fetchItemAndReviews = async () => {
             try {
-                const docRef = doc(db, "listings", id);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const itemData = { id: docSnap.id, ...docSnap.data() };
+                let itemData = null;
+
+                if (slugMode && slug) {
+                    const q = query(collection(db, "listings"), where("slug", "==", slug));
+                    const snap = await getDocs(q);
+                    if (!snap.empty) {
+                        itemData = { id: snap.docs[0].id, ...snap.docs[0].data() };
+                    }
+                } else {
+                    const docRef = doc(db, "listings", id);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        itemData = { id: docSnap.id, ...docSnap.data() };
+                    }
+                }
+
+                if (itemData) {
                     setItem(itemData);
 
                     // Fetch reviews for this seller
@@ -327,7 +340,11 @@ const ItemDetail = () => {
                                         key={rel.id}
                                         className="related-item-card glass-card"
                                         onClick={() => {
-                                            navigate(`/item/${rel.id}`);
+                                            if (rel.slug) {
+                                                navigate(`/item/s/${rel.slug}`);
+                                            } else {
+                                                navigate(`/item/${rel.id}`);
+                                            }
                                             window.scrollTo(0, 0);
                                         }}
                                     >
