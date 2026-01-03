@@ -11,6 +11,7 @@ import Auth from './pages/Auth';
 import Chat from './pages/Chat';
 import MyChats from './pages/MyChats';
 import Profile from './pages/Profile';
+import Admin from './pages/Admin';
 import './styles/variables.css';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/chat/:chatId" element={<Chat />} />
               <Route path="/chats" element={<MyChats />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
           <Footer />

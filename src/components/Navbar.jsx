@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search, PlusSquare, User, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Search, PlusSquare, User, ShoppingBag, MessageCircle, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
-    const { user } = useAuth();
+    const { user, isAdmin } = useAuth();
     return (
         <nav className="navbar glass-card">
             <div className="nav-container">
@@ -24,6 +24,11 @@ const Navbar = () => {
                     {user && (
                         <Link to="/chats" className="nav-link">
                             <MessageCircle size={20} />
+                        </Link>
+                    )}
+                    {isAdmin && (
+                        <Link to="/admin" className="nav-link admin-link" title="Admin Panel">
+                            <Shield size={20} />
                         </Link>
                     )}
                     <Link to="/sell" className="sell-btn btn-primary">

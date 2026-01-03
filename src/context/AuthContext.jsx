@@ -17,6 +17,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const signup = async (email, password, name, college) => {
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
             name,
             email,
             college,
+            role: 'user', // Default role
             createdAt: new Date()
         });
 
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
+        setIsAdmin(false);
         return signOut(auth);
     };
 
@@ -50,8 +53,10 @@ export const AuthProvider = ({ children }) => {
                 const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
                 const userData = userDoc.exists() ? userDoc.data() : {};
                 setUser({ ...firebaseUser, ...userData });
+                setIsAdmin(userData.role === 'admin');
             } else {
                 setUser(null);
+                setIsAdmin(false);
             }
             setLoading(false);
         });
@@ -61,6 +66,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         user,
+        isAdmin,
         signup,
         login,
         logout,
