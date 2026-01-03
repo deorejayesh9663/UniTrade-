@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, PlusSquare, User, ShoppingBag, MessageCircle, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
