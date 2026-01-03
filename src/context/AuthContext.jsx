@@ -8,6 +8,9 @@ import {
     updateProfile
 } from 'firebase/auth';
 
+import { db } from '../firebase/config';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -16,9 +19,19 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const signup = async (email, password, name) => {
+    const signup = async (email, password, name, college) => {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(res.user, { displayName: name });
+
+        // Save additional user info to Firestore
+        await setDoc(doc(db, "users", res.user.uid), {
+            uid: res.user.uid,
+            name,
+            email,
+            college,
+            createdAt: new Date()
+        });
+
         return res;
     };
 
@@ -31,8 +44,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user);
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                // Fetch extra info from Firestore
+                const userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+                setUser({ ...firebaseUser, ...userData });
+            } else {
+                setUser(null);
+            }
             setLoading(false);
         });
 

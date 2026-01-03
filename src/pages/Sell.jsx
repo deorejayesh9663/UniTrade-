@@ -57,6 +57,7 @@ const Sell = () => {
                 price: parseFloat(formData.price),
                 sellerId: user.uid,
                 sellerName: user.displayName || "Student",
+                college: user.college || "Universal", // Default to Universal if no college set
                 createdAt: serverTimestamp(),
                 image: imageUrl
             });

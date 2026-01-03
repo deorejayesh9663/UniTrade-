@@ -3,16 +3,19 @@ import { motion } from 'framer-motion';
 import { db } from '../firebase/config';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, MapPin, Tag, Clock } from 'lucide-react';
+import { Search, Filter, MapPin, Tag, Clock, GraduationCap } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import './Explore.css';
 
 const Explore = () => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
+    const [communityFilter, setCommunityFilter] = useState('My College');
 
     useEffect(() => {
         const fetchListings = async () => {
@@ -44,7 +47,13 @@ const Explore = () => {
         const matchesPrice = maxPrice === '' || item.price <= parseFloat(maxPrice);
         const isNotSold = !item.sold;
 
-        return matchesCategory && matchesSearch && matchesPrice && isNotSold;
+        // Community Filter Logic
+        let matchesCollege = true;
+        if (user && communityFilter === 'My College' && user.college) {
+            matchesCollege = item.college === user.college;
+        }
+
+        return matchesCategory && matchesSearch && matchesPrice && isNotSold && matchesCollege;
     });
 
     return (
@@ -76,6 +85,18 @@ const Explore = () => {
             </div>
 
             <div className="filter-bar glass-card">
+                {user && user.college && (
+                    <div className="community-select">
+                        <label><GraduationCap size={16} /> Community:</label>
+                        <select
+                            value={communityFilter}
+                            onChange={(e) => setCommunityFilter(e.target.value)}
+                        >
+                            <option value="My College">{user.college}</option>
+                            <option value="Global">All Campuses</option>
+                        </select>
+                    </div>
+                )}
                 <div className="category-scroll">
                     {categories.map(cat => (
                         <button
