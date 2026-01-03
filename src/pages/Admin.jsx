@@ -12,6 +12,8 @@ import {
     getDoc,
     where
 } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
+import { storage } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -39,6 +41,7 @@ const Admin = () => {
     const [platformFee, setPlatformFee] = useState(30); // Default 30 RS
     const [loading, setLoading] = useState(true);
     const [saveStatus, setSaveStatus] = useState('');
+    const [cleanupStatus, setCleanupStatus] = useState('');
 
     useEffect(() => {
         if (!isAdmin) {
@@ -91,6 +94,47 @@ const Admin = () => {
             console.error("Error saving settings:", err);
             setSaveStatus('Error saving settings.');
         }
+    };
+
+    const handleCleanup = async () => {
+        if (!window.confirm("This will permanently delete images and listings that have been 'Sold' for more than 30 days. Proceed?")) return;
+
+        setCleanupStatus('Starting cleanup...');
+        let count = 0;
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        try {
+            const oldSoldListings = listings.filter(item =>
+                item.sold &&
+                item.soldAt &&
+                (item.soldAt instanceof Date ? item.soldAt : item.soldAt.toDate()) < thirtyDaysAgo
+            );
+
+            for (const item of oldSoldListings) {
+                // 1. Delete Image from Storage if it exists
+                if (item.image && item.image.includes('firebasestorage')) {
+                    try {
+                        const imgRef = ref(storage, item.image);
+                        await deleteObject(imgRef);
+                    } catch (e) {
+                        console.error("Image delete failed:", e);
+                    }
+                }
+                // 2. Delete Doc from Firestore
+                await deleteDoc(doc(db, "listings", item.id));
+                count++;
+            }
+
+            setCleanupStatus(`Cleanup complete! Removed ${count} old items.`);
+            // Refresh listings
+            const listingsSnap = await getDocs(collection(db, "listings"));
+            setListings(listingsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } catch (err) {
+            console.error("Cleanup error:", err);
+            setCleanupStatus('Error during cleanup.');
+        }
+        setTimeout(() => setCleanupStatus(''), 5000);
     };
 
     const handleDeleteListing = async (id) => {
@@ -163,6 +207,21 @@ const Admin = () => {
                         </div>
                         <button onClick={handleSaveSettings} className="btn-primary">Update Revenue Model</button>
                         {saveStatus && <p className="status-msg">{saveStatus}</p>}
+                    </div>
+                </section>
+
+                {/* Storage Maintenance */}
+                <section className="admin-section settings-section glass-card">
+                    <div className="section-header">
+                        <Trash2 size={20} />
+                        <h2>Storage Maintenance</h2>
+                    </div>
+                    <div className="settings-form">
+                        <p className="help-text" style={{ marginBottom: '1rem' }}>
+                            Free up Firebase Storage by deleting images and data for items that were sold more than 30 days ago.
+                        </p>
+                        <button onClick={handleCleanup} className="btn-primary delete-btn">Run Storage Cleanup</button>
+                        {cleanupStatus && <p className="status-msg">{cleanupStatus}</p>}
                     </div>
                 </section>
 

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /chat
+Disallow: /chats
+
+Sitemap: https://uni-trade-plum.vercel.app/sitemap.xml

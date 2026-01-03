@@ -38,6 +38,12 @@ const Explore = () => {
         fetchListings();
     }, []);
 
+    useEffect(() => {
+        document.title = activeCategory === 'All'
+            ? 'Explore Campus Listings - UniTrade'
+            : `${activeCategory} for Sale - UniTrade Marketplace`;
+    }, [activeCategory]);
+
     const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Lab Gear', 'Other'];
 
     const filteredItems = items.filter(item => {

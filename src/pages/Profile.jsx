@@ -64,9 +64,12 @@ const Profile = () => {
 
     const handleMarkSold = async (listingId) => {
         try {
-            await updateDoc(doc(db, "listings", listingId), { sold: true });
+            await updateDoc(doc(db, "listings", listingId), {
+                sold: true,
+                soldAt: new Date() // Store the time it was sold for cleanup
+            });
             setMyListings(prev => prev.map(item =>
-                item.id === listingId ? { ...item, sold: true } : item
+                item.id === listingId ? { ...item, sold: true, soldAt: new Date() } : item
             ));
         } catch (err) {
             alert("Error marking as sold");
