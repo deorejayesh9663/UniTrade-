@@ -81,7 +81,10 @@
             </head>
             <body>
                 <div class="container">
-                    <h1>Uni<span>Trade</span> Sitemap</h1>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h1><a href="/">Uni<span>Trade</span> Sitemap</a></h1>
+                        <a href="/" style="background: rgba(168, 85, 247, 0.2); padding: 8px 16px; border-radius: 8px; border: 1px solid #a855f7; color: #a855f7; font-weight: bold; font-size: 14px;">← Back to Marketplace</a>
+                    </div>
                     <p>This is an XML Sitemap, meant for consumption by search engines like Google. It contains <xsl:value-of select="count(sitemap:urlset/sitemap:url)"/> URLs.</p>
                     <table>
                         <thead>
