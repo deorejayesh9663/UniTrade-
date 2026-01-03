@@ -1,3 +1,13 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Explore from './pages/Explore';
+import ItemDetail from './pages/ItemDetail';
+import Sell from './pages/Sell';
+import Auth from './pages/Auth';
 import Chat from './pages/Chat';
 import MyChats from './pages/MyChats';
 import Profile from './pages/Profile';
