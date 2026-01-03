@@ -1,16 +1,78 @@
-# React + Vite
+# 🎓 UniTrade - College Marketplace Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium, full-stack marketplace platform designed exclusively for college students to buy, sell, and trade items within their campus community.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔐 **Secure Authentication** - Email/Password login with Firebase
+- 🛍️ **Live Marketplace** - Browse and search items with advanced filters
+- 📸 **Image Upload** - Real product photos stored in Firebase Storage
+- 💬 **Real-time Chat** - Direct messaging between buyers and sellers
+- ⭐ **Seller Reviews** - Build trust with ratings and feedback
+- 📊 **User Dashboard** - Manage your listings and wishlist
+- 🎨 **Premium UI** - Modern glassmorphism design with smooth animations
 
-## React Compiler
+## 🚀 Quick Deploy to Vercel
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Method 1: Via Vercel Website (Easiest)
 
-## Expanding the ESLint configuration
+1. **Push to GitHub:**
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/unitrade-marketplace.git
+   git push -u origin main
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. **Deploy on Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New" → "Project"
+   - Import your GitHub repository
+   - Click "Deploy" (Vercel auto-detects Vite settings)
+   - Your site will be live in ~2 minutes! 🎉
+
+### Method 2: Via Vercel CLI
+
+```bash
+npm install -g vercel
+vercel login
+vercel
+```
+
+## 🛠️ Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## 🔥 Firebase Setup
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project
+3. Enable **Authentication** (Email/Password)
+4. Enable **Firestore Database** (Start in test mode)
+5. Enable **Storage**
+6. Copy your config and update `src/firebase/config.js`
+
+## 📱 Tech Stack
+
+- **Frontend:** React + Vite
+- **Styling:** Vanilla CSS with Glassmorphism
+- **Backend:** Firebase (Auth, Firestore, Storage)
+- **Animations:** Framer Motion
+- **Icons:** Lucide React
+- **Routing:** React Router DOM
+- **Deployment:** Vercel
+
+## 📄 License
+
+MIT License - Feel free to use this for your college!
+
+---
+
+Built with ❤️ for campus communities
