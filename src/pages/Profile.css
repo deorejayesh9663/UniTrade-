@@ -1,0 +1,230 @@
+.profile-page {
+    padding: 120px 2rem 5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    border-radius: 24px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: var(--grad-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.profile-details h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+}
+
+.profile-details p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.campus-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(244, 63, 94, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.profile-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.profile-tabs button {
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.profile-tabs button.active {
+    background: var(--glass-bg);
+    border-color: var(--primary);
+    color: var(--primary);
+    backdrop-filter: blur(10px);
+}
+
+.listings-grid,
+.saved-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.profile-item-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-img-wrapper {
+    position: relative;
+    height: 180px;
+}
+
+.item-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sold-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 2px;
+}
+
+.profile-item-card.sold {
+    opacity: 0.7;
+}
+
+.profile-item-card .item-info {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.profile-item-card h3 {
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-item-card .price {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    flex: 1;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+}
+
+.action-btn.check:hover {
+    background: #10b98120;
+    color: #10b981;
+    border-color: #10b981;
+}
+
+.action-btn.delete:hover {
+    background: #f43f5e20;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .profile-info {
+        flex-direction: column;
+    }
+}
