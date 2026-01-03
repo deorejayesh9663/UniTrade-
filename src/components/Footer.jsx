@@ -22,6 +22,12 @@ const Footer = () => {
                         <a href="/how-it-works">How it works</a>
                     </div>
                     <div className="link-group">
+                        <h4>Developer</h4>
+                        <span className="dev-name">deorejayeshpramod</span>
+                        <a href="tel:9529434491">📞 9529434491</a>
+                        <a href="mailto:deorejayesh503@gmail.com">✉️ deorejayesh503@gmail.com</a>
+                    </div>
+                    <div className="link-group">
                         <h4>Support</h4>
                         <a href="/safety">Safety Tips</a>
                         <a href="/faq">FAQs</a>

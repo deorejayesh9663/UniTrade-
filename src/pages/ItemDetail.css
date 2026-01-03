@@ -71,6 +71,10 @@
     transform: scale(1.1);
 }
 
+.icon-btn.report:hover {
+    background: #ef4444;
+}
+
 .content-side {
     display: flex;
     flex-direction: column;
@@ -270,4 +274,69 @@
 
 .add-review-form textarea:focus {
     border-color: var(--primary);
+}
+
+/* Related Items Section */
+.related-section-wrapper {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--glass-border);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-main);
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.related-item-card {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.related-item-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.rel-img-host {
+    width: 100%;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: var(--glass-bg);
+}
+
+.rel-img-host img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.related-item-card:hover .rel-img-host img {
+    transform: scale(1.1);
+}
+
+.rel-info {
+    padding: 1rem;
+}
+
+.rel-info h4 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rel-info p {
+    color: var(--primary);
+    font-weight: 700;
 }

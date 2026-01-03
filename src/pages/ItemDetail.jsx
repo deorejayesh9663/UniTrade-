@@ -15,6 +15,7 @@ const ItemDetail = () => {
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
+    const [relatedItems, setRelatedItems] = useState([]);
     const [reviewText, setReviewText] = useState('');
     const [rating, setRating] = useState(5);
 
@@ -35,6 +36,20 @@ const ItemDetail = () => {
                     );
                     const reviewsSnap = await getDocs(reviewsQ);
                     setReviews(reviewsSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+
+                    // Fetch Similar items
+                    const relatedQ = query(
+                        collection(db, "listings"),
+                        where("category", "==", itemData.category),
+                        where("sold", "==", false)
+                    );
+                    const relatedSnap = await getDocs(relatedQ);
+                    setRelatedItems(
+                        relatedSnap.docs
+                            .map(d => ({ id: d.id, ...d.data() }))
+                            .filter(i => i.id !== id)
+                            .slice(0, 4)
+                    );
 
                     // Check if saved
                     if (user) {
@@ -153,6 +168,42 @@ const ItemDetail = () => {
         }
     };
 
+    const handleShare = async () => {
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: item.title,
+                    text: `Check out this ${item.title} at ${item.college} campus on UniTrade!`,
+                    url: window.location.href,
+                });
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                alert("Link copied to clipboard!");
+            }
+        } catch (err) {
+            console.error("Error sharing:", err);
+        }
+    };
+
+    const handleReport = async () => {
+        if (!user) return navigate('/login');
+        if (window.confirm("Do you want to report this listing for inappropriate content?")) {
+            try {
+                await addDoc(collection(db, "reports"), {
+                    itemId: id,
+                    itemTitle: item.title,
+                    reportedBy: user.uid,
+                    sellerId: item.sellerId,
+                    createdAt: serverTimestamp(),
+                    status: 'pending'
+                });
+                alert("Listing reported. Our team will review it. Thank you for keeping the campus safe!");
+            } catch (err) {
+                console.error("Report failed:", err);
+            }
+        }
+    };
+
     if (loading) return <div className="loading-state">Loading item details...</div>;
     if (!item) return <div className="error-state">Item not found.</div>;
 
@@ -169,10 +220,12 @@ const ItemDetail = () => {
                         <button
                             className={`icon-btn ${saved ? 'active' : ''}`}
                             onClick={handleSave}
+                            title="Save to Wishlist"
                         >
                             <Heart size={20} fill={saved ? "currentColor" : "none"} />
                         </button>
-                        <button className="icon-btn"><Share2 size={20} /></button>
+                        <button className="icon-btn" onClick={handleShare} title="Share Listing"><Share2 size={20} /></button>
+                        <button className="icon-btn report" onClick={handleReport} title="Report Listing"><ShieldCheck size={20} /></button>
                     </div>
                 </div>
 
@@ -200,7 +253,7 @@ const ItemDetail = () => {
                             <div className="avatar">{item.sellerName?.[0] || 'S'}</div>
                             <div className="seller-meta">
                                 <h4>{item.sellerName || "Verified Student"}</h4>
-                                <p>Campus Verified</p>
+                                <p><MapPin size={12} /> {item.college || "Campus Member"}</p>
                                 <div className="stats">
                                     <span>⭐ 4.9 Rating</span>
                                     <span>•</span>
@@ -264,6 +317,32 @@ const ItemDetail = () => {
                             </form>
                         )}
                     </div>
+
+                    {relatedItems.length > 0 && (
+                        <div className="related-section-wrapper">
+                            <h3 className="section-title">Similar Items You Might Like</h3>
+                            <div className="related-grid">
+                                {relatedItems.map(rel => (
+                                    <div
+                                        key={rel.id}
+                                        className="related-item-card glass-card"
+                                        onClick={() => {
+                                            navigate(`/item/${rel.id}`);
+                                            window.scrollTo(0, 0);
+                                        }}
+                                    >
+                                        <div className="rel-img-host">
+                                            <img src={rel.image} alt={rel.title} />
+                                        </div>
+                                        <div className="rel-info">
+                                            <h4>{rel.title}</h4>
+                                            <p>${rel.price}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

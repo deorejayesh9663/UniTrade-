@@ -65,6 +65,32 @@ const Home = () => {
                 </motion.div>
             </section>
 
+            <section className="trending-categories">
+                <div className="section-header">
+                    <h2>Trending <span>Categories</span></h2>
+                    <p>What's hot in your campus right now.</p>
+                </div>
+                <div className="category-grid">
+                    {[
+                        { name: 'Books', icon: '📚', count: '450+' },
+                        { name: 'Cycles', icon: '🚲', count: '120+' },
+                        { name: 'Electronics', icon: '💻', count: '300+' },
+                        { name: 'Notes', icon: '📝', count: '800+' }
+                    ].map(cat => (
+                        <motion.div
+                            key={cat.name}
+                            whileHover={{ scale: 1.05 }}
+                            className="cat-card glass-card"
+                            onClick={() => navigate(`/explore?category=${cat.name}`)}
+                        >
+                            <span className="cat-icon">{cat.icon}</span>
+                            <h3>{cat.name}</h3>
+                            <p>{cat.count} listings</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
             <section className="features">
                 <div className="feature-grid">
                     <div className="feature-card glass-card">

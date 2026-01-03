@@ -138,6 +138,9 @@ const Explore = () => {
                             <div className="item-image">
                                 <img src={item.image} alt={item.title} />
                                 <div className="category-badge">{item.category}</div>
+                                {user && item.college === user.college && (
+                                    <div className="campus-verified-badge">My Campus</div>
+                                )}
                             </div>
                             <div className="item-details">
                                 <div className="price-row">
@@ -147,7 +150,7 @@ const Explore = () => {
                                 <h3>{item.title}</h3>
                                 <div className="location">
                                     <MapPin size={14} />
-                                    <span>{item.location}</span>
+                                    <span>{item.location} • {item.college}</span>
                                 </div>
                                 <div className="seller-info">
                                     <div className="avatar">{item.sellerName?.[0] || 'S'}</div>
